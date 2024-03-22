@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'v3';
+const CACHE_NAME = 'v4';
 const precachedResources = [
   '/umi.js',
   '/layouts__index.chunk.css',
@@ -33,6 +33,7 @@ async function precache() {
     'js',
     'css',
     'png',
+    'jpg',
   ]);
 
   console.log({ canCacheFilePaths });
