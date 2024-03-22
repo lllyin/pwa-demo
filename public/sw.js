@@ -29,12 +29,16 @@ async function precache() {
   console.log('run precache', cache.keys());
 
   const filePaths = Object.values(ASSET_JSON);
-  const canCacheFilePaths = filterFilesByExtensions(filePaths, [
+  let canCacheFilePaths = filterFilesByExtensions(filePaths, [
     'js',
     'css',
     'png',
     'jpg',
   ]);
+  // 过滤掉
+  canCacheFilePaths = canCacheFilePaths.filter(
+    (path) => path.indexOf('/sw.js') < 0
+  );
 
   console.log({ canCacheFilePaths });
 
@@ -89,7 +93,7 @@ self.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then((cacheNameList) => {
       console.log('缓存列表:', cacheNameList);
-      // 移出旧的缓存
+      // 移除旧的缓存
       return Promise.all(
         cacheNameList.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
@@ -99,8 +103,6 @@ self.addEventListener('activate', function (event) {
       );
     })
   );
-
-  return self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {

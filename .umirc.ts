@@ -5,6 +5,7 @@ export default defineConfig({
     { path: '/', component: 'index' },
     { path: '/docs', component: 'docs' },
   ],
+  hash: true,
   writeToDisk: true,
   manifest: {},
   metas: [
