@@ -7,6 +7,15 @@ const precachedResources = [
   '/layouts__index.async.js',
 ];
 
+const ASSET_JSON = {};
+
+function filterFilesByExtensions(filePaths, extensions) {
+  return filePaths.filter((filePath) => {
+    const extension = filePath.split('.').pop(); // 获取文件后缀名
+    return extensions.includes(extension);
+  });
+}
+
 function isCacheable(request) {
   const url = new URL(request.url);
 
@@ -18,7 +27,17 @@ function isCacheable(request) {
 async function precache() {
   const cache = await caches.open(CACHE_NAME);
   console.log('run precache', cache.keys());
-  return cache.addAll(precachedResources);
+
+  const filePaths = Object.values(ASSET_JSON);
+  const canCacheFilePaths = filterFilesByExtensions(filePaths, [
+    'js',
+    'css',
+    'png',
+  ]);
+
+  console.log({ canCacheFilePaths });
+
+  return cache.addAll(canCacheFilePaths);
 }
 
 async function cacheFirst(request) {
