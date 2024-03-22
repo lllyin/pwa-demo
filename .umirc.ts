@@ -5,6 +5,8 @@ export default defineConfig({
     { path: '/', component: 'index' },
     { path: '/docs', component: 'docs' },
   ],
+  writeToDisk: true,
+  manifest: {},
   metas: [
     {
       name: 'viewport',
@@ -65,6 +67,16 @@ export default defineConfig({
       sizes: '512x512',
       href: '/favicon@512.png',
     },
+  ],
+  scripts: [
+    `
+    if (navigator.serviceWorker != null) {
+      navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        console.log('Registered events at scope: ', registration.scope);
+      });
+    }
+    `
   ],
   npmClient: 'yarn',
 });
